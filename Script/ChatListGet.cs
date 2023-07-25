@@ -42,7 +42,7 @@ public class ChatListGet : MonoBehaviour
 
     private string userToken;
 
-   
+
 
 
     // Start is called before the first frame update
@@ -83,7 +83,7 @@ public class ChatListGet : MonoBehaviour
         yield return OnSend2(URL2);
         //yield return OnSend3(URL3);
         string token = userToken;
-        Debug.Log(token);
+        //Debug.Log(token);
 
         //WWWForm form = new WWWForm();
         //form.AddField("user_id", id);
@@ -106,9 +106,9 @@ public class ChatListGet : MonoBehaviour
             {
                 //通信成功
 
-                Debug.Log(webRequest.downloadHandler.text);
+                //Debug.Log(webRequest.downloadHandler.text);
                 chatList = JsonUtility.FromJson<ChatList>("{\"chatLists\":" + webRequest.downloadHandler.text + "}");
-                Debug.Log(chatList.chatLists[0].chat_room_name);
+                //Debug.Log(chatList.chatLists[0].chat_room_name);
                 string test = "";
                 foreach (ChatListResult cr in chatList.chatLists)
                 {
@@ -167,7 +167,7 @@ public class ChatListGet : MonoBehaviour
         //テスト用
         string token = userToken;
         //string token = Login.GetToken();
-        Debug.Log(token);
+        //Debug.Log(token);
 
 
         using (UnityWebRequest www = UnityWebRequest.Get(url))
@@ -186,7 +186,7 @@ public class ChatListGet : MonoBehaviour
             {
                 //通信成功
 
-                Debug.Log(www.downloadHandler.text);
+                //Debug.Log(www.downloadHandler.text);
                 User user = JsonUtility.FromJson<User>("{\"users\":[" + www.downloadHandler.text + "]}");
                 string test = "";
                 foreach (UserResult us in user.users)
@@ -266,14 +266,14 @@ public class ChatListGet : MonoBehaviour
             else
             {
                 //通信成功
-                Debug.Log(webRequest.downloadHandler.text);
+                //Debug.Log(webRequest.downloadHandler.text);
 
                 Token token = JsonUtility.FromJson<Token>("{\"tokens\":[" + webRequest.downloadHandler.text + "]}");
                 //testResult.text = string.Format("要素数:{0}", json.jsons.Length);
                 string test = "";
                 foreach (TokenResult js in token.tokens)
                 {
-                    Debug.Log(js.token);
+                    //Debug.Log(js.token);
                     test += string.Format("{0}", js.token);
                 }
                 userToken = test;
