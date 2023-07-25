@@ -20,9 +20,8 @@ public class RealTimeSchroll : MonoBehaviour
     void Awake()
     {
         Debug.Log("AwakeŠJŽn");
-        scrollView = new DynamicVScrollView();
 
-        this.insertItem(0, new ChatListResult { id = 0, chat_room_name = "value0", owner_id = 100 });
+        //this.insertItem(0, new ChatListResult { id = 0, chat_room_name = "value0", owner_id = 100 });
         for (int i = 1; i < 21; i++)
         {
             //chatRoomList.Add(new ChatListResult { id = i, chat_room_name = "room" + i, owner_id = 21 - i });
@@ -49,8 +48,8 @@ public class RealTimeSchroll : MonoBehaviour
         // set custom data
 
         this.chatRoomList.Insert(index, data);
-        Debug.Log(this.chatRoomList.Count);
-        Debug.Log(scrollView.totalItemCount);
+        //Debug.Log(this.chatRoomList.Count);
+        //Debug.Log(scrollView.totalItemCount);
         this.scrollView.totalItemCount = this.chatRoomList.Count;
         Debug.Log(scrollView.totalItemCount);
     }

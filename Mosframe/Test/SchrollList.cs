@@ -37,7 +37,6 @@ public class SchrollList : UIBehaviour, IDynamicScrollViewItem
     protected override void Start()
     {
         Debug.Log("Start開始");
-        realTimeSchroll = new RealTimeSchroll();
         this.updateItem();
         Debug.Log("Start終了");
     }
@@ -45,7 +44,7 @@ public class SchrollList : UIBehaviour, IDynamicScrollViewItem
     public void onUpdateItem(int index)
     {
         Debug.Log("onupdateItem開始");
-        Debug.Log(realTimeSchroll.chatRoomList.Count);
+        //Debug.Log(realTimeSchroll.chatRoomList.Count);
         Debug.Log(index);
         foreach (ChatListResult clr in realTimeSchroll.chatRoomList)
         {
