@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//using UnityEngine.UIElements;
 
 public class ScrollItem1 : MonoBehaviour, IDynamicScrollViewItem
 {
@@ -12,17 +13,34 @@ public class ScrollItem1 : MonoBehaviour, IDynamicScrollViewItem
             Color.green,
         };
 
+    //それぞれのアイテムを識別するためのindex番号
+    private int itemIndex;
+
     [SerializeField]
     public Text title;
     [SerializeField]
     public Image background;
-    /*
-    [SerializeField]
-    public ScrollView scrollView;
-    */
+
+    //ダイアログポップ用のオブジェクト
+    [SerializeField] private AnimatedDialog animatedDialog;
+
+    [SerializeField] private Text RoomText;
+
+    public void OnClick()
+    {
+        ScrollView1 scrollView1;
+        GameObject obj = transform.parent.parent.parent.gameObject;
+        scrollView1 = obj.GetComponent<ScrollView1>();
+        List<ChatListResult> chatListResultList = scrollView1.list;
+        Debug.Log(chatListResultList[itemIndex].chat_room_name + "が押されました。");
+        RoomText.text = chatListResultList[itemIndex].chat_room_name;
+        animatedDialog.Open();
+    }
+
 
     public void onUpdateItem(int index)
     {
+        itemIndex = index;
         Debug.Log("onUpdateItem開始" + index);
         ScrollView1 scrollView1;
         //探し方を変える
