@@ -17,16 +17,16 @@ public class AnimatedDialog : MonoBehaviour
     private static readonly int ParamIsOpen = Animator.StringToHash("IsOpen");
 
     // ダイアログは開いているかどうか
-    public bool IsOpen => gameObject.activeSelf;
+    public bool isOpen => gameObject.activeSelf;
 
     // アニメーション中かどうか
-    public bool IsTransition { get; private set; }
+    public bool isTransition { get; private set; }
 
     // ダイアログを開く
     public void Open()
     {
         // 不正操作防止
-        if (IsOpen || IsTransition) return;
+        if (isOpen || isTransition) return;
 
         // パネル自体をアクティブにする
         gameObject.SetActive(true);
@@ -42,7 +42,7 @@ public class AnimatedDialog : MonoBehaviour
     public void Close()
     {
         // 不正操作防止
-        if (!IsOpen || IsTransition) return;
+        if (!isOpen || isTransition) return;
 
         // IsOpenフラグをクリア
         _animator.SetBool(ParamIsOpen, false);
@@ -54,7 +54,7 @@ public class AnimatedDialog : MonoBehaviour
     // 開閉アニメーションの待機コルーチン
     private IEnumerator WaitAnimation(string stateName, UnityAction onCompleted = null)
     {
-        IsTransition = true;
+        isTransition = true;
 
         yield return new WaitUntil(() =>
         {
@@ -63,7 +63,7 @@ public class AnimatedDialog : MonoBehaviour
             return state.IsName(stateName) && state.normalizedTime >= 1;
         });
 
-        IsTransition = false;
+        isTransition = false;
 
         onCompleted?.Invoke();
     }
