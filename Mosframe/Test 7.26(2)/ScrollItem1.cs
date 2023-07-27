@@ -27,7 +27,9 @@ public class ScrollItem1 : MonoBehaviour, IDynamicScrollViewItem
         ScrollView1 scrollView1;
         //探し方を変える
         //親のオブジェクトを探すように
-        GameObject obj = GameObject.Find("Vertical Scroll View");
+        //GameObject obj = GameObject.Find("Vertical Scroll View"); //名前で探すと複数あった際に良くない
+        GameObject obj = transform.parent.parent.parent.gameObject;
+        Debug.Log(obj);
         scrollView1 = obj.GetComponent<ScrollView1>();
         Debug.Log(scrollView1.list[index].id + scrollView1.list[index].chat_room_name);
         List<ChatListResult> chatListResultList = scrollView1.list;
