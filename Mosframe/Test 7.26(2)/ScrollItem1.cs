@@ -2,6 +2,7 @@ using Mosframe;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 //using UnityEngine.UIElements;
 
@@ -13,19 +14,24 @@ public class ScrollItem1 : MonoBehaviour, IDynamicScrollViewItem
             Color.green,
         };
 
-    //それぞれのアイテムを識別するためのindex番号
-    private int itemIndex;
-
     [SerializeField]
     public Text title;
     [SerializeField]
     public Image background;
+
+    //それぞれのアイテムを識別するためのindex番号
+    private int itemIndex;
+
+    //チャットルームに移動する際に必要な番号
+    public int room_id;
+    public string room_title;
 
     //ダイアログポップ用のオブジェクト
     [SerializeField] private AnimatedDialog animatedDialog;
 
     [SerializeField] private Text RoomText;
 
+    //ダイアログが開く用のメソッド
     public void OnClick()
     {
         ScrollView1 scrollView1;
@@ -33,11 +39,27 @@ public class ScrollItem1 : MonoBehaviour, IDynamicScrollViewItem
         scrollView1 = obj.GetComponent<ScrollView1>();
         List<ChatListResult> chatListResultList = scrollView1.list;
         Debug.Log(chatListResultList[itemIndex].chat_room_name + "が押されました。");
-        RoomText.text = chatListResultList[itemIndex].chat_room_name;
+        RoomText.text = chatListResultList[itemIndex].chat_room_name + "\n オーナーid:" + chatListResultList[itemIndex].owner_id;
         animatedDialog.Open();
     }
 
+    //移動用のメソッド
+    //値を保持したまま別のシーンに行きたいが上手くいかない。
+    public void LoadChatRoom()
+    {
+        ScrollView1 scrollView1;
+        GameObject obj = transform.parent.parent.parent.gameObject;
+        scrollView1 = obj.GetComponent<ScrollView1>();
+        List<ChatListResult> chatListResultList = scrollView1.list;
+        room_id = chatListResultList[itemIndex].id;
+        room_title = itemIndex.ToString();
+        DontDestroyOnLoad(obj);
+        SceneManager.LoadScene("ChatScene");
+        //SceneManager.LoadScene("ChatScene", LoadSceneMode.Additive);
 
+    }
+
+    //ルームの名前を表示するためのメソッド、スクロールされるときに起動する。
     public void onUpdateItem(int index)
     {
         itemIndex = index;

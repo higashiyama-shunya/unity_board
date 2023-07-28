@@ -14,7 +14,7 @@ public class AnimatedDialog : MonoBehaviour
     [SerializeField] private int _layer;
 
     // IsOpenフラグ(アニメーターコントローラー内で定義したフラグ)
-    private static readonly int ParamIsOpen = Animator.StringToHash("IsOpen");
+    private static readonly int paramIsOpen = Animator.StringToHash("IsOpen");
 
     // ダイアログは開いているかどうか
     public bool isOpen => gameObject.activeSelf;
@@ -32,7 +32,7 @@ public class AnimatedDialog : MonoBehaviour
         gameObject.SetActive(true);
 
         // IsOpenフラグをセット
-        _animator.SetBool(ParamIsOpen, true);
+        _animator.SetBool(paramIsOpen, true);
 
         // アニメーション待機
         StartCoroutine(WaitAnimation("Shown"));
@@ -45,7 +45,7 @@ public class AnimatedDialog : MonoBehaviour
         if (!isOpen || isTransition) return;
 
         // IsOpenフラグをクリア
-        _animator.SetBool(ParamIsOpen, false);
+        _animator.SetBool(paramIsOpen, false);
 
         // アニメーション待機し、終わったらパネル自体を非アクティブにする
         StartCoroutine(WaitAnimation("Hidden", () => gameObject.SetActive(false)));
