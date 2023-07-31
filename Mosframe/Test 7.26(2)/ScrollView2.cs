@@ -1,26 +1,34 @@
+﻿using Mosframe;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
-using System.Threading.Tasks;
-using UnityEditor.PackageManager.Requests;
-using UnityEditor.Compilation;
 
-public class ChatRoomListGet : MonoBehaviour
+public class ScrollView2 : MonoBehaviour
 {
-    //接続するURL
     private const string URL = "http://192.168.56.56/api/getAllChatRoom/";
 
-    //オブジェクト用→getComponentで取得するように変更
+    public List<ChatListResult> list = new List<ChatListResult>();
+
     /*
     [SerializeField]
-    public Text chatRoomText;
-    */
+    DynamicScrollView dynamicScrollView;
+
+    
+    private void Start()
+    {
+        for (int i = 1; i < 6; i++)
+        {
+            list.Add(new ChatListResult() { id = i, chat_room_name = "room" + i, owner_id = i });
+        }
+        dynamicScrollView.totalItemCount = list.Count;
+    }*/
+
     async Task Start()
     {
         Debug.Log("Start開始");
-        await TextDisplay();
+        await ListCreate();
         Debug.Log("Start終了");
     }
 
@@ -39,8 +47,8 @@ public class ChatRoomListGet : MonoBehaviour
             }
             else
             {
-                Debug.Log("text:" + webRequest.downloadHandler.text);
                 //接続成功
+                Debug.Log("text:" + webRequest.downloadHandler.text);
                 var response = JsonUtility.FromJson<ChatList>("{\"chatLists\":" + webRequest.downloadHandler.text + "}");
                 Debug.Log("GetChatRoomList終了");
                 return response;
@@ -48,20 +56,17 @@ public class ChatRoomListGet : MonoBehaviour
         }
     }
 
-    public async Task TextDisplay()
+    public async Task ListCreate()
     {
-        Debug.Log("TextDisplay開始");
-        Text text;
-        GameObject obj = transform.Find("ChatRoomListText").gameObject;
-        text = obj.GetComponent<Text>();
-        text.text = "";
-
+        DynamicScrollView dynamicScrollView = gameObject.GetComponent<DynamicScrollView>();
         var request = await GetChatRommList(URL);
         foreach (ChatListResult clr in request.chatLists)
         {
-            text.text += string.Format("({0}){1}:{2}\n", clr.id, clr.chat_room_name, clr.created_at);
+            list.Add(new ChatListResult() { id = clr.id, chat_room_name = clr.chat_room_name, owner_id = clr.owner_id });
         }
-
+        Debug.Log("変更前:" + dynamicScrollView.totalItemCount + ":" + list.Count);
+        dynamicScrollView.totalItemCount = list.Count;
+        Debug.Log("変更後:" + dynamicScrollView.totalItemCount + ":" + list.Count);
         Debug.Log(request.chatLists[0].chat_room_name);
         Debug.Log("TextDisplay終了");
     }
