@@ -17,6 +17,8 @@ public class ChatRoomListGet : MonoBehaviour
     [SerializeField]
     public Text chatRoomText;
     */
+
+    //await でTextDisplayが終わってから次の処理に移行するようにしている。
     async Task Start()
     {
         Debug.Log("Start開始");
@@ -24,11 +26,16 @@ public class ChatRoomListGet : MonoBehaviour
         Debug.Log("Start終了");
     }
 
+    //戻り値はTask<ChatList>でChatListが戻り値になる。
+    //API通信を行うメソッド
     public async Task<ChatList> GetChatRommList(string url)
     {
         Debug.Log("GetChatRoomList開始");
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
+            //今まではコルーチンでyield return でやっていた→コルーチンではなくasync/awaitを使って非同期処理を行うように
+            //await webRequest.SendWebRequestで出来る。※通常ではできなく、ライブラリや使えるようにするためのクラスを作成する必要がある。
+            //webRequest.SendWebRequestが終わるまで次の処理に以降しないようにしている。
             await webRequest.SendWebRequest();
             if (webRequest.isNetworkError)
             {
@@ -48,6 +55,7 @@ public class ChatRoomListGet : MonoBehaviour
         }
     }
 
+    //Taskだと戻り値がないということになる。
     public async Task TextDisplay()
     {
         Debug.Log("TextDisplay開始");
@@ -56,6 +64,7 @@ public class ChatRoomListGet : MonoBehaviour
         text = obj.GetComponent<Text>();
         text.text = "";
 
+        //API通信が終わるまで待つ処理。
         var request = await GetChatRommList(URL);
         foreach (ChatListResult clr in request.chatLists)
         {
